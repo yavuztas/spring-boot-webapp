@@ -1,0 +1,23 @@
+body {
+    padding-top: 5rem;
+}
+.info {
+    padding: 3rem 1.5rem;
+    text-align: center;
+}
+
+.info > h1, .info > h2, .info > h3, .info > p {
+    text-align: left;
+}
+
+.info .username {
+    font-weight: bold;
+}
+.info .logout {
+    float: right;
+}
+
+.table.properties th {
+    text-align: left;
+    padding: 5px 20px;
+}

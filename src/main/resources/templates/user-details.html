@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User Web Application</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.2.1/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/main.css}"/>
+    <script>
+        function openProperties(el){
+            //toggle properties panel
+            var trEl = el.parentElement.parentElement.nextElementSibling;
+            if (trEl.style.display === '') {
+                trEl.style.display = 'none';
+                el.innerText = '+';
+            } else {
+                trEl.style.display = '';
+                el.innerText = '-';
+            }
+        }
+    </script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+        <a class="navbar-brand" href="#">User Web Application</a>
+    </nav>
+
+    <main role="main" class="container">
+
+        <div class="info">
+            <h3>User Details</h3>
+            <p>Welcome <span class="username" th:text="${user.username}"></span>,</p>
+            <p>
+                <!-- print itemHolder if we look other user's items -->
+                Listing
+                <b th:if="${itemHolder}" th:text="${itemHolder}+'\'s'"></b>
+                <span th:unless="${itemHolder}">your</span>
+                items <b th:text="'('+${items.size()+')'}"></b>:
+                <a th:if="${user.isAdmin()}" th:href="@{/users}">Back to list</a>
+                <a class="logout" th:href="@{/logout}">Logout</a>
+            </p>
+            <table class="table">
+                <thead class="thead-light">
+                <tr>
+                    <th style="width: 30px"></th>
+                    <th>Name</th>
+                    <th>Game</th>
+                    <th>Expiration Date</th>
+                    <th>Quantity</th>
+                </tr>
+                </thead>
+                <tbody>
+                <div th:each="item : ${items}">
+                    <tr>
+                        <th><a class="open" href="javascript:void(0)" onclick="openProperties(this)">+</a></th>
+                        <td th:text="${item.name}">Item1</td>
+                        <td th:text="${item.game}">Game1</td>
+                        <td th:text="${item.expirationDate}">2012-08-12</td>
+                        <td th:text="${item.quantity}">2</td>
+                    </tr>
+                    <tr style="display: none">
+                        <td colspan="5">
+                            <table class="table properties">
+                                <thead class="thead-light">
+                                <tr><th colspan="2">Item Properties <span th:text="'('+${item.properties.size()}+')'"></span></th></tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="prop : ${item.properties}">
+                                    <td th:text="${prop.name}">name1</td>
+                                    <td th:text="${prop.value}">value1</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </div>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</body>
+</html>
