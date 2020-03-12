@@ -30,3 +30,6 @@ build/
 ### VS Code ###
 .vscode/
 /.mvn/wrapper/
+
+### OS SPECIFIC ###
+.DS_Store
