@@ -11,12 +11,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.net.ConnectException;
 import java.net.UnknownHostException;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -30,14 +28,14 @@ public class ErrorHandlerController extends ResponseEntityExceptionHandler {
 
     private final Logger logger = LoggerFactory.getLogger("User Webapp Business Exceptions");
 
-    @Value("${user.webservice.url}")
+    @Value("${app.user.webservice.url}")
     private String webServiceUrl;
 
     @Autowired
     private ObjectMapper objectMapper;
 
     private Map<String, Object> getResponseAsMap(String response){
-        LinkedHashMap map;
+        Map map;
         try {
             map = objectMapper.readValue(response, LinkedHashMap.class);
         } catch (JsonProcessingException e) {

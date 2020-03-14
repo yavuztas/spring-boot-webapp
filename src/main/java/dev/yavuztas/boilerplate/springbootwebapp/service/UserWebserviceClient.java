@@ -13,7 +13,7 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class UserWebserviceClient implements IUserWebserviceClient {
 
-    @Value("${user.webservice.url}")
+    @Value("${app.user.webservice.url}")
     private String webServiceUrl;
 
     @Autowired
