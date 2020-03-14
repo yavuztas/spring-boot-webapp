@@ -1,8 +1,8 @@
-# User Web Application
+# Spring Boot Web Application
 ## Developer Manual
 
 ### Getting Started
-After you installed `Java 8+` and `Maven 3+`, the fastest way to run **User Web Application** without any configuration:
+After you installed `Java 8+` and `Maven 3+`, the fastest way to run **Spring Boot Web Application** without any configuration:
 ```
 mvn spring-boot:run
 ```
@@ -27,7 +27,7 @@ password: john1
 ```
 
 ### Running Options
-To run User Web Application over on **Mysql**:
+To run Spring Boot Web Application over on **Mysql**:
 - Make sure you have a running Mysql instance on `localhost:3306`
 - Create an empty schema `testwebapp` if you haven't already
 - Simply navigate to the project folder and execute command below:
