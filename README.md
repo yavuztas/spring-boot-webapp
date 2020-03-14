@@ -77,3 +77,6 @@ user details page - `Admin`:
 ```
 http://localhost/user/{username}
 ```
+### Notes About Security
+1. We disabled password encoder to keep it simple in `dev.yavuztas.boilerplate.springbootwebapp.config.SecurityConfig`. Ideally in production environments,
+you should use an adaptive one way function like BCryptPasswordEncoder, Pbkdf2PasswordEncoder, or SCryptPasswordEncoder. 
