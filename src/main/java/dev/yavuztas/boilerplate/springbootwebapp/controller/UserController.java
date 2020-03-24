@@ -12,12 +12,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.List;
 
 @Controller
-public class UserWebappController {
+public class UserController {
 
     @Autowired
     private IUserService userService;
@@ -25,18 +24,8 @@ public class UserWebappController {
     @Autowired
     private IUserWebserviceClient userWebserviceClient;
 
-    @GetMapping("/")
-    public RedirectView home(@AuthenticationPrincipal User user){
-        //Since our business requires, if authenticated user is ADMIN then redirect to user list page
-        if (user.hasRole(RoleType.ADMIN)){
-            return new RedirectView("users");
-        } else {
-            return new RedirectView("user");
-        }
-    }
-
     @GetMapping("/user")
-    public String userDetails(@AuthenticationPrincipal User user, Model model){
+    public String userDetails(@AuthenticationPrincipal User user, Model model) {
         model.addAttribute("user", user);
         UserItemsView userItems = userWebserviceClient.getUserItems(user.getUsername());
         model.addAttribute("items", userItems.getItems());

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" th:href="@{/images/favicon.ico}">
+    <title>Please sign in</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.4.1/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+</head>
+
+<body class="text-center">
+<form class="form-signin" method="post" th:action="@{/login}">
+    <!--    <img class="mb-4" th:src="@{/images/logo.svg}" alt="" width="72" height="72">-->
+    <div class="logo purple mb-4 rounded">S</div>
+    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+    <div th:if="${param.error}">
+        <div class="alert alert-danger">Invalid username and password</div>
+    </div>
+    <div th:if="${param.logout}">
+        <div class="alert alert-info">You have been logged out</div>
+    </div>
+    <label for="inputUsername" class="sr-only">Username</label>
+    <input type="text" id="inputUsername" name="username" class="form-control" placeholder="Username" required autofocus>
+    <label for="inputPassword" class="sr-only">Password</label>
+    <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required>
+    <div class="m-5" th:text="${param.error}"></div>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+    <p class="mt-5 mb-3 text-muted">&copy; 2020-2021</p>
+</form>
+</body>
+</html>

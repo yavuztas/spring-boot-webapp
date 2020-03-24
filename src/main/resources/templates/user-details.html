@@ -1,82 +1,93 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>User Web Application</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.2.1/css/bootstrap.min.css}"/>
-    <link rel="stylesheet" th:href="@{/main.css}"/>
-    <script>
-        function openProperties(el){
-            //toggle properties panel
-            var trEl = el.parentElement.parentElement.nextElementSibling;
-            if (trEl.style.display === '') {
-                trEl.style.display = 'none';
-                el.innerText = '+';
-            } else {
-                trEl.style.display = '';
-                el.innerText = '-';
-            }
-        }
-    </script>
-</head>
+<head th:replace="fragments/header :: head"></head>
 <body>
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-        <a class="navbar-brand" href="#">User Web Application</a>
-    </nav>
 
-    <main role="main" class="container">
+<script>
+    function toggleProperties(el) {
+        //toggle properties panel
+        var propContainer = el.parentElement.parentElement.nextElementSibling.nextElementSibling;
+        if (propContainer.style.display === '') {
+            propContainer.style.display = 'none';
+            el.classList.remove("open");
+        } else {
+            propContainer.style.display = '';
+            el.classList.add("open");
+        }
+    }
 
-        <div class="info">
-            <h3>User Details</h3>
-            <p>Welcome <span class="username" th:text="${user.username}"></span>,</p>
-            <p>
-                <!-- print itemHolder if we look other user's items -->
-                Listing
-                <b th:if="${itemHolder}" th:text="${itemHolder}+'\'s'"></b>
-                <span th:unless="${itemHolder}">your</span>
-                items <b th:text="'('+${items.size()+')'}"></b>:
-                <a th:if="${user.isAdmin()}" th:href="@{/users}">Back to list</a>
-                <a class="logout" th:href="@{/logout}">Logout</a>
-            </p>
-            <table class="table">
-                <thead class="thead-light">
-                <tr>
-                    <th style="width: 30px"></th>
-                    <th>Name</th>
-                    <th>Game</th>
-                    <th>Expiration Date</th>
-                    <th>Quantity</th>
-                </tr>
-                </thead>
-                <tbody>
-                <div th:each="item : ${items}">
-                    <tr>
-                        <th><a class="open" href="javascript:void(0)" onclick="openProperties(this)">+</a></th>
-                        <td th:text="${item.name}">Item1</td>
-                        <td th:text="${item.game}">Game1</td>
-                        <td th:text="${item.expirationDate}">2012-08-12</td>
-                        <td th:text="${item.quantity}">2</td>
-                    </tr>
-                    <tr style="display: none">
-                        <td colspan="5">
-                            <table class="table properties">
-                                <thead class="thead-light">
-                                <tr><th colspan="2">Item Properties <span th:text="'('+${item.properties.size()}+')'"></span></th></tr>
-                                </thead>
-                                <tbody>
-                                <tr th:each="prop : ${item.properties}">
-                                    <td th:text="${prop.name}">name1</td>
-                                    <td th:text="${prop.value}">value1</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
+    function toggleAll() {
+        var els = document.querySelectorAll('.row-handler');
+        els.forEach(el => toggleProperties(el))
+    }
+</script>
+
+<div th:replace="fragments/header :: navbar"></div>
+
+<div class="container-fluid">
+    <div class="row">
+
+        <div th:replace="fragments/header :: sidebar"></div>
+
+        <main role="main" class="container">
+
+            <div class="d-flex align-items-center p-0 my-3">
+                <div class="d-flex align-items-center p-2 pr-3 mr-3 text-white-50 bg-purple rounded box-shadow">
+                    <div class="user-avatar large blue ml-1 mr-2 rounded" th:text="${user.username.substring(0,1).toUpperCase()}">J</div>
+                    <div class="lh-100">
+                        <h6 class="mb-0 text-white font-weight-light">Welcome <strong class="username" th:text="${user.username}"></strong></h6>
+                    </div>
                 </div>
-                </tbody>
-            </table>
-        </div>
-    </main>
+                <nav class="flex-grow-1" aria-label="breadcrumb">
+                    <ol th:if="${itemHolder}" class="breadcrumb mb-0 bg-white">
+                        <li class="breadcrumb-item"><a th:href="@{/users}">Users</a></li>
+                        <li class="breadcrumb-item active" aria-current="page" th:text="${itemHolder}"></li>
+                    </ol>
+                    <ol th:unless="${itemHolder}" class="breadcrumb mb-0 bg-white">
+                        <li class="breadcrumb-item active" aria-current="page">Home</li>
+                    </ol>
+                </nav>
+            </div>
+
+            <div class="my-3 p-3 bg-white rounded box-shadow">
+                <h6 class="border-bottom border-gray pb-2 mb-0 font-weight-normal">
+                    Listing
+                    <b th:if="${itemHolder}" th:text="${itemHolder}+'\'s'"></b>
+                    <span th:unless="${itemHolder}">your</span>
+                    items: <b th:text="''+${items.size()+''}"></b>
+                    <small class="float-right text-right mb-2">
+                        <a href="javascript:void(0)" onclick="toggleAll()">Toggle all...</a>
+                    </small>
+                </h6>
+                <div class="media text-muted pt-3 border-bottom" th:each="item : ${items}">
+                    <div class="user-avatar blue mr-2 rounded" th:text="${item.quantity}"></div>
+                    <p class="media-body pb-3 mb-0 small">
+                            <span class="float-right text-gray-dark">
+                                Properties: <b th:text="${item.properties.size()}"></b>
+                                <svg onclick="toggleProperties(this)" class="bi bi-caret-right-fill row-handler" width="1em" height="1em"
+                                     viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12.14 8.753l-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 011.659-.753l5.48 4.796a1 1 0 010 1.506z"/>
+                                </svg>
+                            </span>
+                        <strong class="d-block text-gray-dark" th:text="${item.name}"></strong>
+                        Game: <span th:text="${item.game}"></span>,
+                        Expires @ <span th:text="${item.expirationDate}"></span>
+                    </p>
+                    <div class="flex-break"></div>
+                    <div class="w-100 properties-table" style="display: none">
+                        <div class="alert alert-info" th:unless="${item.properties.size()}">This item has no properties</div>
+                        <p class="media-body p-1 ml-3 mb-0 small border-top" th:each="prop : ${item.properties}">
+                            <b th:text="${'#' + prop.name}"></b> : <span th:text="${prop.value}"></span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+
+    </div>
+</div>
+
 </body>
 </html>

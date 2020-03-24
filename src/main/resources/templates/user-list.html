@@ -1,43 +1,52 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>User Web Application</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.2.1/css/bootstrap.min.css}"/>
-    <link rel="stylesheet" th:href="@{/main.css}"/>
-</head>
+<head th:replace="fragments/header :: head"></head>
 <body>
-    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-        <a class="navbar-brand" href="#">User Web Application</a>
-    </nav>
 
-    <main role="main" class="container">
+<div th:replace="fragments/header :: navbar"></div>
 
-        <div class="info">
-            <h3>User List</h3>
-            <p>Welcome <span class="username" th:text="${user.username}"></span>,</p>
-            <p>
-                Listing all users <b th:text="'('+${users.size()+')'}"></b>
-                <a class="logout" th:href="@{/logout}">Logout</a>
-            </p>
-            <table class="table">
-                <thead class="thead-light">
-                    <tr>
-                        <th>ID</th>
-                        <th>Username</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="u : ${users}">
-                        <td th:text="${u.id}"></td>
-                        <td th:text="${u.username}"></td>
-                        <td><a th:href="${'/user/'+u.username}">Items...</a></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </main>
+<div class="container-fluid">
+    <div class="row">
+
+        <div th:replace="fragments/header :: sidebar"></div>
+
+        <main role="main" class="container">
+
+            <div class="d-flex align-items-center p-0 my-3">
+                <div class="d-flex align-items-center p-2 pr-3 mr-3 text-white-50 bg-purple rounded box-shadow">
+                    <div class="user-avatar large blue ml-1 mr-2 rounded" th:text="${user.username.substring(0,1).toUpperCase()}">J</div>
+                    <div class="lh-100">
+                        <h6 class="mb-0 text-white font-weight-light">Welcome <strong class="username" th:text="${user.username}"></strong></h6>
+                    </div>
+                </div>
+                <nav class="flex-grow-1" aria-label="breadcrumb">
+                    <ol class="breadcrumb mb-0 bg-white">
+                        <li class="breadcrumb-item active" aria-current="page">Users</li>
+                    </ol>
+                </nav>
+            </div>
+
+            <div class="my-3 p-3 bg-white rounded box-shadow">
+                <h6 class="border-bottom border-gray pb-2 mb-0 font-weight-normal">
+                    Listing all users: <b th:text="''+${users.size()+''}"></b>
+                </h6>
+                <div class="media text-muted pt-3 border-bottom" th:each="u : ${users}" th:id="${'user-'+u.id}">
+                    <div class="user-avatar blue mr-2 rounded" th:text="${u.username.substring(0,1).toUpperCase()}">J</div>
+                    <p class="media-body pb-3 mb-0 small">
+                        <strong class="float-right text-gray-dark" th:text="${'#'+u.id}"></strong>
+                        <strong class="d-block text-gray-dark" th:text="${'@'+u.username}"></strong>
+                        Click for <a th:href="${'/user/'+u.username}">items...</a>
+                    </p>
+                </div>
+                <small class="d-block text-right mt-3">
+                    <a href="#">All users...</a>
+                </small>
+            </div>
+
+        </main>
+
+    </div>
+</div>
+
 </body>
 </html>

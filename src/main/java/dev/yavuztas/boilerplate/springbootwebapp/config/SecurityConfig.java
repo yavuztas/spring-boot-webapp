@@ -39,10 +39,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-				.requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-				.anyRequest().authenticated()
-				.and().formLogin()
-				.permitAll();
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                .anyRequest().authenticated()
+                .and().csrf().disable()
+                .formLogin()
+                .loginPage("/login").permitAll()
+                .and().logout().permitAll().deleteCookies("JSESSIONID");
 	}
 
 }
